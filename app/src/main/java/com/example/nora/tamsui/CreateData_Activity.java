@@ -109,7 +109,7 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
                         } else if (viewID == R.id.edit) {
                             GoToEdit(position);
                             return;
-                        } else if (viewID == R.id.change) {
+                            } else if (viewID == R.id.change) {
                             DeleData(position);
                         }
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
