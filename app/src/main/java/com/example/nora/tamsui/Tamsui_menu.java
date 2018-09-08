@@ -122,10 +122,11 @@ public class Tamsui_menu extends AppCompatActivity {
         try {
             intent.putExtra("RandomData",RandomData);
             startActivity(intent);
-        }catch (Exception e){
-            Log.e(TAG,e.toString());
+        }catch (Exception e) {
+            Log.e(TAG, e.toString());
         }
-
-//
+    }
+    private void ChengInit(){
+        // = w =
     }
 }
