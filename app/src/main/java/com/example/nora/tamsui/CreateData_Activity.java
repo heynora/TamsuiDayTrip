@@ -1,5 +1,6 @@
 package com.example.nora.tamsui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +28,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -107,7 +110,7 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
                             GoToEdit(position);
                             return;
                         } else if (viewID == R.id.change) {
-                            message += "功能研發中...";
+                            DeleData(position);
                         }
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                     }
@@ -128,10 +131,11 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
 
     List<SceneData> list;
     String TAG = "CteateData";
+
     private List<SceneData> getData() {
         list = getIntent().getParcelableArrayListExtra("Data");
-        if(list == null ){
-            Log.e(TAG,"LIST IS NULL");
+        if (list == null) {
+            Log.e(TAG, "LIST IS NULL");
             return new ArrayList<>();
         }
 
@@ -210,15 +214,15 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
         }
     }
 
-    private void GoToEdit(int position){
-        Log.e(TAG,"SCENE : "+list.get(position).getScene());
+    private void GoToEdit(int position) {
+        Log.e(TAG, "SCENE : " + list.get(position).getScene());
         Intent intent = new Intent(CreateData_Activity.this, Notified_Data_Activity.class);
         intent.putExtra("Data", list.get(position));
         startActivity(intent);
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
                 && keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
@@ -233,7 +237,34 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
     @Override
     public void onBackPressed() {
         Log.d("CDA", "onBackPressed Called");
-        Intent setIntent = new Intent(CreateData_Activity.this,SingInActivity.class);
+        Intent setIntent = new Intent(CreateData_Activity.this, SingInActivity.class);
         startActivity(setIntent);
     }
+
+    ProgressDialog dialog;
+
+    private void DeleData(int position) {
+        dialog = ProgressDialog.show(this,
+                "刪除中", "請等待...", true);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String collection = "Tamsui";
+        final String document = list.get(position).getScene();
+
+        db.collection(collection).document(document)
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        dialog.dismiss();
+                        if (task.isSuccessful()) {
+                            Toast.makeText(CreateData_Activity.this, "刪除成功", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            Toast.makeText(CreateData_Activity.this, "錯誤～~請檢查網路是否正常", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
 }
