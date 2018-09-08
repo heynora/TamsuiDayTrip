@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Tamsui</string>
+    <string name="gueest_name">guest</string>
+    <string name="admin_name">admin</string>
+
+    <string name="AletheiaUniversity">真理大學</string>
+    <string name="TKSeniorHighSchool">淡江中學</string>
+    <string name="EngMuseum">英國理事館</string>
+    <string name="TamsuiGround">淡水海關碼頭園區</string>
+
+    <string name="Tample">鄞山寺</string>
+    <string name="TamsuiDragon">淡水龍山寺</string>
+    <string name="TamsuiTample">清水祖師廟</string>
+    <string name="TDKTample">福佑宮</string>
+    <string name="Boring">多田榮吉故居</string>
+    <string name="Oxford">馬階醫院原址與淡水教會</string>
+    <string name="TamsuiOldStreet">淡水老街</string>
+    <string name="Tamsui倉庫">淡水殼牌倉庫</string>
+
+    <string name="BOOM">滬尾砲台</string>
+    <string name="洋行">英商嘉士洋行</string>
+    <string name="Lover">淡水情人橋</string>
+    <string name="White">小白宮</string>
+    <string name="Water">一滴水紀念館</string>
+    <string name="Chocolate">世界巧克力夢工廠</string>
+
+    <string name="Tamsui莊園">淡水莊園</string>
+    <string name="Coffee">紫藤咖啡館</string>
+    
+    <string name="Editing">編輯中</string>
+</resources>

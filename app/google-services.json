@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "68831358421",
+    "firebase_url": "https://tamsui-b5f6f.firebaseio.com",
+    "project_id": "tamsui-b5f6f",
+    "storage_bucket": "tamsui-b5f6f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:68831358421:android:23affe37783b7eac",
+        "android_client_info": {
+          "package_name": "com.example.nora.tamsui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "68831358421-p8vur5q69chf3lns1pvcljrss2tsetqd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nora.tamsui",
+            "certificate_hash": "f7f2b12211df36c701503b2cf4de8073e7e31591"
+          }
+        },
+        {
+          "client_id": "68831358421-b5v7lgu780kjm4gjfsvodc84f7afcdas.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJs4L-Tg8X5p0w496ZYu6wzLw2jpbRRe0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "68831358421-b5v7lgu780kjm4gjfsvodc84f7afcdas.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
