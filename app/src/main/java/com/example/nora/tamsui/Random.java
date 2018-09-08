@@ -105,4 +105,9 @@ public class Random extends AppCompatActivity {
                     .into(Image[i]);
         }
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Random.this.finish();
+    }
 }
