@@ -63,4 +63,10 @@ public class Introduction extends AppCompatActivity {
                 .apply(new RequestOptions().centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE))
                 .into(image);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Introduction.this.finish();
+    }
 }
