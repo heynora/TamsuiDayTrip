@@ -22,6 +22,7 @@
         <activity android:name=".CreateData_Activity"></activity>
         <activity android:name=".Notified_Data_Activity"></activity>
         <activity android:name=".Download_Activity"></activity>
+        <activity android:name=".AddData_Activity"></activity>
     </application>
 
 </manifest>

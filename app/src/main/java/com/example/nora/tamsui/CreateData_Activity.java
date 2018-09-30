@@ -105,7 +105,7 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
                     public void onSwipeOptionClicked(int viewID, int position) {
                         String message = "";
                         if (viewID == R.id.add) {
-                            message += "功能研發中";
+                            GoToAdd();
                         } else if (viewID == R.id.edit) {
                             GoToEdit(position);
                             return;
@@ -218,6 +218,10 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
         Log.e(TAG, "SCENE : " + list.get(position).getScene());
         Intent intent = new Intent(CreateData_Activity.this, Notified_Data_Activity.class);
         intent.putExtra("Data", list.get(position));
+        startActivity(intent);
+    }
+    private void GoToAdd(){
+        Intent intent = new Intent(CreateData_Activity.this,AddData_Activity.class);
         startActivity(intent);
     }
 
