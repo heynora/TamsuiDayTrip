@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ public class Introduction extends AppCompatActivity {
     TextView address;
     ImageView image;
     Button location;
-    MapView locationMap;
+    WebView locationMap;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +52,7 @@ public class Introduction extends AppCompatActivity {
         image = (ImageView) findViewById(R.id.intorduction_image);
         location = (Button)findViewById(R.id.location_bt);
         location.setOnClickListener(location_click);
-        locationMap = (MapView)findViewById(R.id.locationMap);
+        locationMap = (WebView) findViewById(R.id.locationMap);
     }
 
     public void getData() {
