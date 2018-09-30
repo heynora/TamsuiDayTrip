@@ -25,7 +25,7 @@ public class Introduction extends AppCompatActivity {
     TextView content;
     TextView address;
     ImageView image;
-
+    Button location;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +47,8 @@ public class Introduction extends AppCompatActivity {
         content = (TextView) findViewById(R.id.introdution_content);
         address = (TextView) findViewById(R.id.introdution_address);
         image = (ImageView) findViewById(R.id.intorduction_image);
+        location = (Button)findViewById(R.id.location_bt);
+        location.setOnClickListener(location_click);
     }
 
     public void getData() {
@@ -69,4 +71,11 @@ public class Introduction extends AppCompatActivity {
         super.onBackPressed();
         Introduction.this.finish();
     }
+
+    View.OnClickListener location_click = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+        }
+    };
 }

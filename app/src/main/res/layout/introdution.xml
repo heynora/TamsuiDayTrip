@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:weightSum="10">
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -35,32 +37,59 @@
             android:text="title" />
     </LinearLayout>
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="horizontal"
         android:layout_weight="4">
 
         <TextView
             android:id="@+id/introdution_content"
-            android:layout_width="wrap_content"
-            android:layout_height="63dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="content" />
-    </LinearLayout>
+            android:text="content"
+            android:visibility="visible" />
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="invisiblegi" />
+    </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:weightSum="5">
 
-        <TextView
-            android:id="@+id/introdution_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/introdution_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="address" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="address" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/location_bt"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="Button" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
