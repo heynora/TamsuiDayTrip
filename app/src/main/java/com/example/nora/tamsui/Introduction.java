@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.maps.MapView;
 
 /**
  * Created by Nora on 2017/12/17.
@@ -26,6 +27,7 @@ public class Introduction extends AppCompatActivity {
     TextView address;
     ImageView image;
     Button location;
+    MapView locationMap;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,7 @@ public class Introduction extends AppCompatActivity {
         image = (ImageView) findViewById(R.id.intorduction_image);
         location = (Button)findViewById(R.id.location_bt);
         location.setOnClickListener(location_click);
+        locationMap = (MapView)findViewById(R.id.locationMap);
     }
 
     public void getData() {
@@ -72,10 +75,18 @@ public class Introduction extends AppCompatActivity {
         Introduction.this.finish();
     }
 
+    boolean mapVisible = false;
     View.OnClickListener location_click = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
+            mapVisible = !mapVisible;
+            if(mapVisible) {
+                content.setVisibility(View.INVISIBLE);
+                locationMap.setVisibility(View.VISIBLE);
+            }else{
+                content.setVisibility(View.VISIBLE);
+                locationMap.setVisibility(View.INVISIBLE);
+            }
         }
     };
 }

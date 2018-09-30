@@ -51,10 +51,10 @@
             android:visibility="visible" />
 
         <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView2"
+            android:id="@+id/locationMap"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:visibility="invisiblegi" />
+            android:visibility="invisible" />
     </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
