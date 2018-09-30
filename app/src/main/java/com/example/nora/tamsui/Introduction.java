@@ -2,6 +2,7 @@ package com.example.nora.tamsui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,6 +18,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Map;
 
 /**
  * Created by Nora on 2017/12/17.
@@ -82,11 +90,7 @@ public class Introduction extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url)
             {
-
-                final String centerURL = "javascript:centerAt(" +
-                        "25.171794" + "," +
-                        "121.4363604"+ ")";
-                locationMap.loadUrl(centerURL);
+                getLocationFromFirebase();
             }
 
         });
@@ -114,4 +118,34 @@ public class Introduction extends AppCompatActivity {
         }
     };
 
+    String TAG = "Introduction";
+    private void getLocationFromFirebase(){
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("Tamsui").document("Map");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task)
+            {
+                if(task.isSuccessful())
+                {
+                    DocumentSnapshot document = task.getResult();
+                    for (Map.Entry<String, Object> temp : document.getData().entrySet()) {
+                        if(temp.getKey().toString().equals(data.getName())){
+                            Log.e(TAG,data.getName().toString());
+                            Map<String,Double> map = (Map<String,Double>)temp.getValue();
+                            String latitude = map.get("latitude").toString();
+                            String longitude = map.get("longitude").toString();
+                            final String centerURL = "javascript:centerAt(" +
+                                    latitude + "," +
+                                    longitude+ ")";
+                            locationMap.loadUrl(centerURL);
+                        }
+                    }
+
+                }
+
+
+            }
+        });
+    }
 }

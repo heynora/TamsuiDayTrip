@@ -43,11 +43,14 @@ public class Download_Activity extends AppCompatActivity {
         documentName = "Scene" + ScenenIndex;
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection(collection).document(documentName);
+
+
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
+
                     if (document.exists()) {
                         for (Map.Entry<String, Object> temp : document.getData().entrySet()) {
                             try {

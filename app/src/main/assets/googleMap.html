@@ -6,24 +6,27 @@
     <link href="/maps/documentation/javascript/examples/default.css" rel="stylesheet">
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script>
-      var centerPoint = new google.maps.LatLng(25.1769173, 121.4329557);
+      var myLatlng = new google.maps.LatLng(25.1769173, 121.4329557);
       var marker;
       var map;
       function initialize() {
         var mapOptions = {
-          zoom: 17,
+          zoom: 12,
           mapTypeId: google.maps.MapTypeId.ROADMAP,
-          center: centerPoint
+          center: myLatlng
         };
 
         map = new google.maps.Map(document.getElementById('map_canvas'),
                 mapOptions);
-
       }
 
       function centerAt(latitude, longitude){//地圖以給予的座標為中心，即移動地圖至給定的座標
           myLatlng = new google.maps.LatLng(latitude,longitude);
           map.panTo(myLatlng);
+          marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+        });
       }
 
 
