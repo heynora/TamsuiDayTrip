@@ -6,7 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,6 +38,7 @@ public class Introduction extends AppCompatActivity {
         getData();
         CompontSetting();
         setData();
+        setWebView();
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,6 +73,26 @@ public class Introduction extends AppCompatActivity {
                 .into(image);
     }
 
+    private static final String MAP_URL = "file:///android_asset/googleMap.html";
+    boolean webviewReady = false;
+    public void setWebView(){
+        WebSettings webSettings = locationMap.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        locationMap.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url)
+            {
+                webviewReady = true;//webview已經載入完畢
+//                final String centerURL = "javascript:centerAt(" +
+//                        mostRecentLocation.getLatitude() + "," +
+//                        mostRecentLocation.getLongitude()+ ")";
+//                if (webviewReady) webView.loadUrl(centerURL);
+            }
+
+        });
+        locationMap.loadUrl(MAP_URL);
+
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
