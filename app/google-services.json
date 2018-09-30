@@ -31,6 +31,14 @@
           }
         },
         {
+          "client_id": "68831358421-rvesd7bpd2vcic7va0sblvjeag2kh0lo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nora.tamsui",
+            "certificate_hash": "f8c661e13a3ee1aef0d716610c162005dfa77bae"
+          }
+        },
+        {
           "client_id": "68831358421-b5v7lgu780kjm4gjfsvodc84f7afcdas.apps.googleusercontent.com",
           "client_type": 3
         }

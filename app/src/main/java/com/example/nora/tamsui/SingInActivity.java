@@ -105,32 +105,32 @@ public class SingInActivity extends AppCompatActivity {
     ProgressDialog dialog;
     void FirebaseLogin(){
         firebaseAuth = FirebaseAuth.getInstance();
-//        if(pwd_et.getText().toString().equals("admin")) {
-//            Intent intent = new Intent(SingInActivity.this, Download_Activity.class);
-//            startActivity(intent);
-//        }else{
-//            Toast.makeText(SingInActivity.this,"密碼錯誤",Toast.LENGTH_SHORT).show();
-//        }
+        if(pwd_et.getText().toString().equals("000000")) {
+            Intent intent = new Intent(SingInActivity.this, Download_Activity.class);
+            startActivity(intent);
+        }else{
+            Toast.makeText(SingInActivity.this,"密碼錯誤",Toast.LENGTH_SHORT).show();
+        }
 
-        String account = "admin@gmail.com";
-        String pwd = pwd_et.getText().toString();
-        dialog = ProgressDialog.show(SingInActivity.this,
-                "登入中", "請等待...", true);
-        firebaseAuth.signInWithEmailAndPassword(account, pwd)
-                .addOnCompleteListener(SingInActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        dialog.dismiss();
-                        if (task.isSuccessful()) {
-                            Toast.makeText(SingInActivity.this,"新增修改選單",Toast.LENGTH_SHORT).show();
-//                            Intent intent = new Intent(SingInActivity.this, BusinessCardActivity.class);
-//                            startActivity(intent);
-                        } else {
-                            Log.e("TAMSUI","Login Error "+task.toString());
-                            Toast.makeText(SingInActivity.this,"登入錯誤",Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                });
+//        String account = "admin@gmail.com";
+//        String pwd = pwd_et.getText().toString();
+//        dialog = ProgressDialog.show(SingInActivity.this,
+//                "登入中", "請等待...", true);
+//        firebaseAuth.signInWithEmailAndPassword(account, pwd)
+//                .addOnCompleteListener(SingInActivity.this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        dialog.dismiss();
+//                        if (task.isSuccessful()) {
+//                            Toast.makeText(SingInActivity.this,"新增修改選單",Toast.LENGTH_SHORT).show();
+////                            Intent intent = new Intent(SingInActivity.this, BusinessCardActivity.class);
+////                            startActivity(intent);
+//                        } else {
+//                            Log.e("TAMSUI","Login Error "+task.toString());
+//                            Toast.makeText(SingInActivity.this,"登入錯誤",Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                    }
+//                });
     }
 }
