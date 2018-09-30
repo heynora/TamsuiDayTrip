@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Google Maps JavaScript API v3 Example: Marker Animations</title>
+    <link href="/maps/documentation/javascript/examples/default.css" rel="stylesheet">
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script>
+      var centerPoint = new google.maps.LatLng(25.1769173, 121.4329557); //弘光科技大學，台中市中棲路34號
+      var marker;
+      var map;
+      function initialize() {
+        var mapOptions = {
+          zoom: 17,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          center: centerPoint
+        };
+
+        map = new google.maps.Map(document.getElementById('map_canvas'),
+                mapOptions);
+
+      }
+
+      function centerAt(latitude, longitude){//地圖以給予的座標為中心，即移動地圖至給定的座標
+          myLatlng = new google.maps.LatLng(latitude,longitude);
+          map.panTo(myLatlng);
+      }
+
+
+
+    </script>
+</head>
+<body onload="initialize()">
+<div id="map_canvas" style="width: device-width; height: 460px;">map div</div>
+</body>
+</html>
