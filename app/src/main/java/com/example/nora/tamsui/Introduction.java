@@ -82,11 +82,11 @@ public class Introduction extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url)
             {
-                webviewReady = true;//webview已經載入完畢
-//                final String centerURL = "javascript:centerAt(" +
-//                        mostRecentLocation.getLatitude() + "," +
-//                        mostRecentLocation.getLongitude()+ ")";
-//                if (webviewReady) webView.loadUrl(centerURL);
+
+                final String centerURL = "javascript:centerAt(" +
+                        "25.171794" + "," +
+                        "121.4363604"+ ")";
+                locationMap.loadUrl(centerURL);
             }
 
         });
@@ -113,4 +113,5 @@ public class Introduction extends AppCompatActivity {
             }
         }
     };
+
 }
