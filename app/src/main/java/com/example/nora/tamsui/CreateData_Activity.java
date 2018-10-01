@@ -183,7 +183,7 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
 
         public MainAdapter(Context context, List<SceneData> list) {
             inflater = LayoutInflater.from(context);
-            dataList = new ArrayList<>(list);
+            dataList = list;
         }
 
         @Override
@@ -277,8 +277,10 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
         db.collection(collection).document(document).set(SameSceneData).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful())
+                if(task.isSuccessful()) {
                     dialog.dismiss();
+                    mAdapter.notifyDataSetChanged();
+                }
                 else
                     Log.e(TAG,task.getException().toString());
             }
