@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,7 +38,7 @@ public class AddData_Activity extends AppCompatActivity {
     EditText Name_et, Address_et, Description_et;
     ImageView Image;
     Button SentData_bt;
-    Spinner Spinner;
+    Spinner sceneSpinner;
 
 
     private Uri filepath;
@@ -58,7 +59,7 @@ public class AddData_Activity extends AppCompatActivity {
     }
 
     private void ComponentSetting() {
-        Spinner = (Spinner) findViewById(R.id.spinner);
+        sceneSpinner = (Spinner) findViewById(R.id.spinner);
         Name_et = (EditText) findViewById(R.id.Name_et);
         Address_et = (EditText) findViewById(R.id.Address_et);
         Description_et = (EditText) findViewById(R.id.Description_et);
@@ -69,10 +70,11 @@ public class AddData_Activity extends AppCompatActivity {
     private void SpinnerSetting() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Scene, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner.setAdapter(adapter);
+        sceneSpinner.setAdapter(adapter);
     }
 
     private final int PICKFILE_RESULT_CODE = 1;
+
     private void showfilechooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
@@ -98,50 +100,51 @@ public class AddData_Activity extends AppCompatActivity {
 
     private String TAG = "AddData Activity";
     private StorageReference databaseReference;
+
     private void fileupload(Uri filepath) {
         progressDialog = ProgressDialog.show(this,
                 "上傳中", "請等待...", true);
 
-        String picName = Name_et.getText().toString()+".png";
+        String picName = Name_et.getText().toString() + ".png";
         databaseReference = FirebaseStorage.getInstance().getReference();
-        databaseReference.child(picName).putFile(filepath).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+
+        final StorageReference imgReference = databaseReference.child(picName);
+        UploadTask uploadTask = imgReference.putFile(filepath);
+
+        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                progressDialog.dismiss();
-                if(task.isSuccessful()){
-                    Log.e(TAG, "Upload Pic OK");
-                }else{
-                    Log.e(TAG, "ERRRRRRR" + task.getException().toString());
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                return imgReference.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri taskResult = task.getResult();
+                    Log.e(TAG, taskResult.toString());
+                    UpdateData(taskResult.toString());
                 }
             }
         });
     }
 
-
-
-
-
-
-
-
-
-
-
-    ProgressDialog dialog;
     FirebaseFirestore db;
 
-    private void UpdateData() {
-        dialog = ProgressDialog.show(AddData_Activity.this,
-                "上傳中", "請等待...", true);
-        db = FirebaseFirestore.getInstance();
 
+    private void UpdateData(String DownloadUrl) {
+        db = FirebaseFirestore.getInstance();
         String collection = "Tamsui";
-        final String document = getSceneData().getScene();
-        Map<String, String> map = getSceneData().getMap("1");
-        db.collection(collection).document(document).update(getSceneData().getName(), map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        String document = sceneSpinner.getSelectedItem().toString();
+        SceneData result = getSceneData(DownloadUrl, document);
+        Map<String, String> map = result.getMap("1");
+        db.collection(collection).document(document).update(result.getName(), map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                dialog.dismiss();
+                progressDialog.dismiss();
                 if (task.isSuccessful()) {
                     Toast.makeText(AddData_Activity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
                     finish();
@@ -153,13 +156,10 @@ public class AddData_Activity extends AppCompatActivity {
 
     }
 
-    SceneData data;
-    SceneData result = null;
-    private SceneData getSceneData() {
-
-        if (result == null)
-            result = new SceneData(Name_et.getText().toString(), Description_et.getText().toString(),
-                    Address_et.getText().toString(), data.getImagePath().toString(), data.getScene());
+    private SceneData getSceneData(String DownloadUrl, String Scene) {
+        SceneData result = null;
+        result = new SceneData(Name_et.getText().toString(), Description_et.getText().toString(),
+                Address_et.getText().toString(), DownloadUrl, Scene);
         return result;
     }
 

@@ -209,7 +209,8 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
 
             public void bindData(SceneData sceneData) {
                 Name.setText(sceneData.getName());
-                Description.setText(sceneData.getDescription().substring(0, 15) + ".....\n Address :" + sceneData.getAddress());
+                int lastindex =sceneData.getDescription().length() > 15?15:sceneData.getDescription().length();
+                Description.setText(sceneData.getDescription().substring(0, lastindex) + ".....\n Address :" + sceneData.getAddress());
             }
         }
     }
@@ -255,6 +256,8 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
         String collection = "Tamsui";
         final String document = list.get(position).getScene();
 
+
+
         db.collection(collection).document(document)
                 .delete()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -263,7 +266,6 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
                         dialog.dismiss();
                         if (task.isSuccessful()) {
                             Toast.makeText(CreateData_Activity.this, "刪除成功", Toast.LENGTH_SHORT).show();
-                            finish();
                         } else {
                             Toast.makeText(CreateData_Activity.this, "錯誤～~請檢查網路是否正常", Toast.LENGTH_SHORT).show();
                         }
