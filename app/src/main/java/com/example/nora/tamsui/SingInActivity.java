@@ -30,16 +30,17 @@ public class SingInActivity extends AppCompatActivity {
     private EditText pwd_et;
     private Button signin_btn;
     private ImageView cover_img;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sing_in);
 
         //layout元件設定
-        user_spn = (Spinner)findViewById(R.id.user_spn);
-        pwd_et = (EditText)findViewById(R.id.pwd_et);
-        signin_btn = (Button)findViewById(R.id.signin_btn);
-        cover_img = (ImageView)findViewById(R.id.cover_img);
+        user_spn = (Spinner) findViewById(R.id.user_spn);
+        pwd_et = (EditText) findViewById(R.id.pwd_et);
+        signin_btn = (Button) findViewById(R.id.signin_btn);
+        cover_img = (ImageView) findViewById(R.id.cover_img);
 
         cover_img.setImageResource(R.drawable.wei);
         //設定使用者選單
@@ -48,9 +49,9 @@ public class SingInActivity extends AppCompatActivity {
         SignInButton();
     }
 
-    void UserSpinner(){
-        String[] User = new String[]{getString(R.string.gueest_name),getString(R.string.admin_name)};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,User);
+    void UserSpinner() {
+        String[] User = new String[]{getString(R.string.gueest_name), getString(R.string.admin_name)};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, User);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         user_spn.setAdapter(adapter);
 
@@ -59,10 +60,10 @@ public class SingInActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 //選取普通使用者
-                if( i == 0){
+                if (i == 0) {
                     //不需要輸入密碼
                     pwd_et.setVisibility(View.INVISIBLE);
-                }else{//使用者需要輸入密碼
+                } else {//使用者需要輸入密碼
                     pwd_et.setVisibility(View.VISIBLE);
                 }
             }
@@ -75,22 +76,22 @@ public class SingInActivity extends AppCompatActivity {
         });
     }
 
-    void SignInButton(){
+    void SignInButton() {
         signin_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //取得下拉式選單的值
                 String SelectItem = user_spn.getSelectedItem().toString();
                 //如果是普通使用者
-                if(SelectItem.equals(getString(R.string.gueest_name))){
+                if (SelectItem.equals(getString(R.string.gueest_name))) {
                     //
-                    Intent intent = new Intent(SingInActivity.this,Tamsui_menu.class);
+                    Intent intent = new Intent(SingInActivity.this, Tamsui_menu.class);
                     startActivity(intent);
-                }else{//如果是管理者
+                } else {//如果是管理者
                     String password = pwd_et.getText().toString();
                     //檢查密碼是否有錯 錯誤則跳出訊息
                     if (TextUtils.isEmpty(password)) {
-                        Toast.makeText(SingInActivity.this,"密碼錯誤",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SingInActivity.this, "密碼錯誤", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     //登入檢查
@@ -103,7 +104,8 @@ public class SingInActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     ProgressDialog dialog;
-    void FirebaseLogin(){
+
+    void FirebaseLogin() {
         firebaseAuth = FirebaseAuth.getInstance();
 
         String account = "admin@gmail.com";
@@ -116,12 +118,12 @@ public class SingInActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         dialog.dismiss();
                         if (task.isSuccessful()) {
-                            Toast.makeText(SingInActivity.this,"新增修改選單",Toast.LENGTH_SHORT).show();
-//                            Intent intent = new Intent(SingInActivity.this, BusinessCardActivity.class);
-//                            startActivity(intent);
+                            Toast.makeText(SingInActivity.this, "新增修改選單", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(SingInActivity.this, Download_Activity.class);
+                            startActivity(intent);
                         } else {
-                            Log.e("TAMSUI","Login Error "+task.toString());
-                            Toast.makeText(SingInActivity.this,"登入錯誤",Toast.LENGTH_SHORT).show();
+                            Log.e("TAMSUI", "Login Error " + task.toString());
+                            Toast.makeText(SingInActivity.this, "登入錯誤", Toast.LENGTH_SHORT).show();
                         }
 
                     }
