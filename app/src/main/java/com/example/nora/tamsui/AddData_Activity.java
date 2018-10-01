@@ -147,10 +147,12 @@ public class AddData_Activity extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (task.isSuccessful()) {
                     Toast.makeText(AddData_Activity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
-                    finish();
+
                 } else {
                     Toast.makeText(AddData_Activity.this, "錯誤～~請CHECK網路是否正常", Toast.LENGTH_SHORT).show();
                 }
+                Intent intent = new Intent(AddData_Activity.this,Download_Activity.class);
+                startActivity(intent);
             }
         });
 

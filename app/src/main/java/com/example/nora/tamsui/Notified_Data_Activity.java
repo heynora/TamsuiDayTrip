@@ -1,6 +1,7 @@
 package com.example.nora.tamsui;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -99,10 +100,11 @@ public class Notified_Data_Activity extends AppCompatActivity {
                 dialog.dismiss();
                 if (task.isSuccessful()) {
                     Toast.makeText(Notified_Data_Activity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
-                    finish();
                 }else{
                     Toast.makeText(Notified_Data_Activity.this, "錯誤～~請CHECK網路是否正常", Toast.LENGTH_SHORT).show();
                 }
+                Intent intent = new Intent(Notified_Data_Activity.this,Download_Activity.class);
+                startActivity(intent);
             }
         });
 

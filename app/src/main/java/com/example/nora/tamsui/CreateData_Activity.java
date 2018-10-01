@@ -107,6 +107,7 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
                         String message = "";
                         if (viewID == R.id.add) {
                             GoToAdd();
+
                         } else if (viewID == R.id.edit) {
                             GoToEdit(position);
                             return;
@@ -215,7 +216,7 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
                 if(sceneData == null)
                     return;
                 else
-                    Log.e(TAG,sceneData.toString());
+                    Log.e(TAG,sceneData.getName());
                 Name.setText(sceneData.getName());
                 int lastindex = sceneData.getDescription().length() > 15 ? 15 : sceneData.getDescription().length();
                 Description.setText(sceneData.getDescription().substring(0, lastindex) + ".....\n Address :" + sceneData.getAddress());
@@ -228,11 +229,13 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
         Intent intent = new Intent(CreateData_Activity.this, Notified_Data_Activity.class);
         intent.putExtra("Data", list.get(position));
         startActivity(intent);
+        CreateData_Activity.this.finish();
     }
 
     private void GoToAdd() {
         Intent intent = new Intent(CreateData_Activity.this, AddData_Activity.class);
         startActivity(intent);
+        CreateData_Activity.this.finish();
     }
 
     @Override
