@@ -38,6 +38,7 @@ import com.nikhilpanju.recyclerviewenhanced.OnActivityTouchListener;
 import com.nikhilpanju.recyclerviewenhanced.RecyclerTouchListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -109,7 +110,7 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
                         } else if (viewID == R.id.edit) {
                             GoToEdit(position);
                             return;
-                            } else if (viewID == R.id.change) {
+                        } else if (viewID == R.id.change) {
                             DeleData(position);
                         }
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
@@ -130,7 +131,7 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
     }
 
     List<SceneData> list;
-    String TAG = "CteateData";
+    String TAG = "CreateData";
 
     private List<SceneData> getData() {
         list = getIntent().getParcelableArrayListExtra("Data");
@@ -138,7 +139,10 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
             Log.e(TAG, "LIST IS NULL");
             return new ArrayList<>();
         }
+        else{
+            Log.e(TAG,list.size()+"");
 
+        }
         return list;
     }
 
@@ -208,8 +212,12 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
             }
 
             public void bindData(SceneData sceneData) {
+                if(sceneData == null)
+                    return;
+                else
+                    Log.e(TAG,sceneData.toString());
                 Name.setText(sceneData.getName());
-                int lastindex =sceneData.getDescription().length() > 15?15:sceneData.getDescription().length();
+                int lastindex = sceneData.getDescription().length() > 15 ? 15 : sceneData.getDescription().length();
                 Description.setText(sceneData.getDescription().substring(0, lastindex) + ".....\n Address :" + sceneData.getAddress());
             }
         }
@@ -221,8 +229,9 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
         intent.putExtra("Data", list.get(position));
         startActivity(intent);
     }
-    private void GoToAdd(){
-        Intent intent = new Intent(CreateData_Activity.this,AddData_Activity.class);
+
+    private void GoToAdd() {
+        Intent intent = new Intent(CreateData_Activity.this, AddData_Activity.class);
         startActivity(intent);
     }
 
@@ -255,22 +264,22 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String collection = "Tamsui";
         final String document = list.get(position).getScene();
+        list.remove(position);
 
+        Map<String,SceneData> SameSceneData = new HashMap<>();
+        for(SceneData temp : list){
+            if(temp.getScene().equals(document))
+                SameSceneData.put(temp.getName(),temp.clone());
+        }
 
-
-        db.collection(collection).document(document)
-                .delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        dialog.dismiss();
-                        if (task.isSuccessful()) {
-                            Toast.makeText(CreateData_Activity.this, "刪除成功", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(CreateData_Activity.this, "錯誤～~請檢查網路是否正常", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        db.collection(collection).document(document).set(SameSceneData).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful())
+                    dialog.dismiss();
+                else
+                    Log.e(TAG,task.getException().toString());
+            }
+        });
     }
-
 }

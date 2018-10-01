@@ -104,13 +104,13 @@ public class SceneData implements Parcelable {
         return new SceneData(this.Name,this.Description,this.Address,this.ImagePath,this.Scene);
     }
 
-    public Map<String,Map<String,String>> getMap(){
+    Map<String,Map<String,String>> getMap(){
         Map<String,Map<String,String>> map = new HashMap<>();
         map.put(getName(),getMap("1"));
         return map;
     }
 
-    public Map<String,String> getMap(String total){
+    Map<String,String> getMap(String total){
         Map<String,String> data = new HashMap<>();
         data.put("Name",getName());
         data.put("Address",getAddress());
