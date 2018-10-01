@@ -39,7 +39,7 @@ public class AddData_Activity extends AppCompatActivity {
     Button SentData_bt;
     Spinner Spinner;
 
-    private static final int PICKFILE_RESULT_CODE = 1;
+
     private Uri filepath;
     ProgressDialog progressDialog;
 
@@ -48,54 +48,16 @@ public class AddData_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_data);
         ComponentSetting();
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.Scene,android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner.setAdapter(adapter);
-        setImageView();
-        Log.e("data",data+"");
+        SpinnerSetting();
+        Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showfilechooser();
+            }
+        });
     }
 
-    static StorageReference databaseReference;
-    public static void SendStorage(String filename, Uri filepath,
-                                   OnSuccessListener<UploadTask.TaskSnapshot> success,
-                                   OnFailureListener fail) {
-        databaseReference = FirebaseStorage.getInstance().getReference();
-        databaseReference.putFile(filepath).addOnSuccessListener(success).addOnFailureListener(fail);
-    }
-    public void setImageView(){
-        Image.setOnClickListener(onClick);
-    }
-    View.OnClickListener onClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            showfilechooser();
-        }
-    };
-
-    private void showfilechooser(){
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent.createChooser(intent,"Select the image"),PICKFILE_RESULT_CODE);
-    }
-    private void fileupload(){
-        progressDialog = ProgressDialog.show(this,
-                "上傳中", "請等待...", true);
-        SendStorage(Name_et.getText().toString(),filepath,successListener,failureListener);
-    }
-    OnSuccessListener<UploadTask.TaskSnapshot> successListener = new OnSuccessListener<UploadTask.TaskSnapshot>() {
-        @Override
-        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-            progressDialog.dismiss();
-            Log.e("DEBUG","Upload Pic OK");
-        }
-    };
-    OnFailureListener failureListener = new OnFailureListener() {
-        @Override
-        public void onFailure(@NonNull Exception e) {
-            Log.e("DEBUG","ERRRRRRR"+e.toString());
-        }
-    };
-    public void ComponentSetting() {
+    private void ComponentSetting() {
         Spinner = (Spinner) findViewById(R.id.spinner);
         Name_et = (EditText) findViewById(R.id.Name_et);
         Address_et = (EditText) findViewById(R.id.Address_et);
@@ -104,20 +66,29 @@ public class AddData_Activity extends AppCompatActivity {
         SentData_bt = (Button) findViewById(R.id.SentData_bt);
     }
 
+    private void SpinnerSetting() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Scene, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner.setAdapter(adapter);
+    }
+
+    private final int PICKFILE_RESULT_CODE = 1;
+    private void showfilechooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent.createChooser(intent, "Select the image"), PICKFILE_RESULT_CODE);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode== PICKFILE_RESULT_CODE && resultCode==RESULT_OK && data!=null && data.getData()!=null){
-
-            filepath=data.getData();
-            fileupload();
-            String temp = filepath.toString();
-            temp = temp.substring(temp.lastIndexOf("."));
-//            imagepath = temp;
-            Log.e("DEBUG","MatchUpload Temp : "+temp);
+        if (requestCode == PICKFILE_RESULT_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            filepath = data.getData();
+            fileupload(filepath);
+            Log.e("DEBUG", "MatchUpload Temp : " + filepath.toString());
             try {
-                Bitmap bitmap= MediaStore.Images.Media.getBitmap(getContentResolver(),filepath);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
                 Image.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -125,15 +96,36 @@ public class AddData_Activity extends AppCompatActivity {
         }
     }
 
-    SceneData result = null;
-    SceneData data;
+    private String TAG = "AddData Activity";
+    private StorageReference databaseReference;
+    private void fileupload(Uri filepath) {
+        progressDialog = ProgressDialog.show(this,
+                "上傳中", "請等待...", true);
 
-    private SceneData getSceneData() {
-        if (result == null)
-            result = new SceneData(Name_et.getText().toString(), Description_et.getText().toString(),
-                    Address_et.getText().toString(), data.getImagePath().toString(),data.getScene());
-        return result;
+        String picName = Name_et.getText().toString()+".png";
+        databaseReference = FirebaseStorage.getInstance().getReference();
+        databaseReference.child(picName).putFile(filepath).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                progressDialog.dismiss();
+                if(task.isSuccessful()){
+                    Log.e(TAG, "Upload Pic OK");
+                }else{
+                    Log.e(TAG, "ERRRRRRR" + task.getException().toString());
+                }
+            }
+        });
     }
+
+
+
+
+
+
+
+
+
+
 
     ProgressDialog dialog;
     FirebaseFirestore db;
@@ -146,14 +138,14 @@ public class AddData_Activity extends AppCompatActivity {
         String collection = "Tamsui";
         final String document = getSceneData().getScene();
         Map<String, String> map = getSceneData().getMap("1");
-        db.collection(collection).document(document).update(getSceneData().getName(),map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        db.collection(collection).document(document).update(getSceneData().getName(), map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 dialog.dismiss();
                 if (task.isSuccessful()) {
                     Toast.makeText(AddData_Activity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
                     finish();
-                }else{
+                } else {
                     Toast.makeText(AddData_Activity.this, "錯誤～~請CHECK網路是否正常", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -161,6 +153,14 @@ public class AddData_Activity extends AppCompatActivity {
 
     }
 
+    SceneData data;
+    SceneData result = null;
+    private SceneData getSceneData() {
 
+        if (result == null)
+            result = new SceneData(Name_et.getText().toString(), Description_et.getText().toString(),
+                    Address_et.getText().toString(), data.getImagePath().toString(), data.getScene());
+        return result;
+    }
 
 }
