@@ -37,11 +37,12 @@ public class SceneData implements Parcelable {
         this.Scene = _Scene;
     }
     SceneData(Map<String, String> data) {
-        this.Name = data.get("Name");
-        this.Description = data.get("Description");
-        this.Address = data.get("Address");
-        this.ImagePath = data.get("ImagePath");
+        this.Name = data.get("Name")==null?data.get("name"):data.get("Name");
+        this.Description = data.get("Description")==null?data.get("description"):data.get("Description");
+        this.Address = data.get("Address")==null?data.get("address"):data.get("Address");
+        this.ImagePath = data.get("ImagePath")==null?data.get("imagePath"):data.get("ImagePath");
         this.Scene = "";
+
     }
 
     protected SceneData(Parcel in) {
@@ -104,13 +105,13 @@ public class SceneData implements Parcelable {
         return new SceneData(this.Name,this.Description,this.Address,this.ImagePath,this.Scene);
     }
 
-    Map<String,Map<String,String>> getMap(){
+    Map<String,Map<String,String>> SceneMap(){
         Map<String,Map<String,String>> map = new HashMap<>();
-        map.put(getName(),getMap("1"));
+        map.put(getName(),SceneMap("1"));
         return map;
     }
 
-    Map<String,String> getMap(String total){
+    Map<String,String> SceneMap(String total){
         Map<String,String> data = new HashMap<>();
         data.put("Name",getName());
         data.put("Address",getAddress());

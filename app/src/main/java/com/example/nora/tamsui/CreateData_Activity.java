@@ -194,6 +194,7 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
 
         @Override
         public void onBindViewHolder(MainViewHolder holder, int position) {
+            Log.e(TAG,"position: " +position);
             holder.bindData(dataList.get(position));
         }
 
@@ -215,8 +216,6 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
             public void bindData(SceneData sceneData) {
                 if(sceneData == null)
                     return;
-                else
-                    Log.e(TAG,sceneData.getName());
                 Name.setText(sceneData.getName());
                 int lastindex = sceneData.getDescription().length() > 15 ? 15 : sceneData.getDescription().length();
                 Description.setText(sceneData.getDescription().substring(0, lastindex) + ".....\n Address :" + sceneData.getAddress());
@@ -269,10 +268,10 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
         final String document = list.get(position).getScene();
         list.remove(position);
 
-        Map<String,SceneData> SameSceneData = new HashMap<>();
+        Map<String,Map<String,String>> SameSceneData = new HashMap<>();
         for(SceneData temp : list){
             if(temp.getScene().equals(document))
-                SameSceneData.put(temp.getName(),temp.clone());
+                SameSceneData.put(temp.getName(),temp.SceneMap("1"));
         }
 
         db.collection(collection).document(document).set(SameSceneData).addOnCompleteListener(new OnCompleteListener<Void>() {

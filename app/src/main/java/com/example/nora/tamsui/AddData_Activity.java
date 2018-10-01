@@ -140,7 +140,7 @@ public class AddData_Activity extends AppCompatActivity {
         String collection = "Tamsui";
         String document = sceneSpinner.getSelectedItem().toString();
         SceneData result = getSceneData(DownloadUrl, document);
-        Map<String, String> map = result.getMap("1");
+        Map<String, String> map = result.SceneMap("1");
         db.collection(collection).document(document).update(result.getName(), map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

@@ -93,7 +93,7 @@ public class Notified_Data_Activity extends AppCompatActivity {
         String collection = "Tamsui";
         final String document = getSceneData().getScene();
         Log.e(TAG, collection + " " + document);
-        Map<String, String> map = getSceneData().getMap("1");
+        Map<String, String> map = getSceneData().SceneMap("1");
         db.collection(collection).document(document).update(getSceneData().getName(),map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -117,7 +117,7 @@ public class Notified_Data_Activity extends AppCompatActivity {
         String document = "Scene5";
         Log.e(TAG, collection + " " + document);
 
-        db.collection(collection).document(document).set(getSceneData().getMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
+        db.collection(collection).document(document).set(getSceneData().SceneMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 dialog.dismiss();

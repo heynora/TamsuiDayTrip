@@ -57,8 +57,8 @@ public class Download_Activity extends AppCompatActivity {
                                 SceneData sceneData = new SceneData((Map<String, String>) temp.getValue());
                                 sceneData.setScene(documentName);
                                 DownloadData.add(sceneData);
-//                                Log.e(TAG, "sceneData : "+temp.getValue().toString());
-//                                Log.e(TAG,"LIST GET: "+DownloadData.get(DownloadData.size()-1).getName());
+                                Log.e(TAG, "sceneData : "+temp.getValue().toString());
+                                Log.e(TAG,"LIST GET: "+DownloadData.get(DownloadData.size()-1).getName());
                             } catch (Exception e) {
                                 Log.e(TAG, "Exception");
                             }
