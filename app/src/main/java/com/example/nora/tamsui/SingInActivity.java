@@ -121,6 +121,7 @@ public class SingInActivity extends AppCompatActivity {
                             Toast.makeText(SingInActivity.this, "新增修改選單", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(SingInActivity.this, Download_Activity.class);
                             startActivity(intent);
+                            SingInActivity.this.finish();
                         } else {
                             Log.e("TAMSUI", "Login Error " + task.toString());
                             Toast.makeText(SingInActivity.this, "登入錯誤", Toast.LENGTH_SHORT).show();
@@ -128,5 +129,17 @@ public class SingInActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    private long firstPressedTime;
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        if (System.currentTimeMillis() - firstPressedTime < 2000) {
+            SingInActivity.this.finish();
+        } else {
+            Toast.makeText(SingInActivity.this, "再按一次退出", Toast.LENGTH_SHORT).show();
+            firstPressedTime = System.currentTimeMillis();
+        }
     }
 }

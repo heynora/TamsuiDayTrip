@@ -126,7 +126,11 @@ public class Tamsui_menu extends AppCompatActivity {
             Log.e(TAG, e.toString());
         }
     }
-    private void ChengInit(){
-        // = w =
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Tamsui_menu.this.finish();
+
     }
 }

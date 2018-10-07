@@ -103,11 +103,18 @@ public class Notified_Data_Activity extends AppCompatActivity {
                 }else{
                     Toast.makeText(Notified_Data_Activity.this, "錯誤～~請CHECK網路是否正常", Toast.LENGTH_SHORT).show();
                 }
-                Intent intent = new Intent(Notified_Data_Activity.this,Download_Activity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(Notified_Data_Activity.this,Download_Activity.class);
+//                startActivity(intent);
+                Notified_Data_Activity.this.finish();
             }
         });
 
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //Intent intent = new Intent(Notified_Data_Activity.this, Tamsui_menu.class);
+        Notified_Data_Activity.this.finish();
     }
 
     private void Set() {

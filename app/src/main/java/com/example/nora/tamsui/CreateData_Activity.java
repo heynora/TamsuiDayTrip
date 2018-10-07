@@ -228,13 +228,13 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
         Intent intent = new Intent(CreateData_Activity.this, Notified_Data_Activity.class);
         intent.putExtra("Data", list.get(position));
         startActivity(intent);
-        CreateData_Activity.this.finish();
+        //CreateData_Activity.this.finish();
     }
 
     private void GoToAdd() {
         Intent intent = new Intent(CreateData_Activity.this, AddData_Activity.class);
         startActivity(intent);
-        CreateData_Activity.this.finish();
+        //CreateData_Activity.this.finish();
     }
 
     @Override
@@ -255,6 +255,7 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
         Log.d("CDA", "onBackPressed Called");
         Intent setIntent = new Intent(CreateData_Activity.this, SingInActivity.class);
         startActivity(setIntent);
+        this.finish();
     }
 
     ProgressDialog dialog;

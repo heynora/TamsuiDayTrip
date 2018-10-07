@@ -73,6 +73,7 @@ public class Download_Activity extends AppCompatActivity {
                             Intent intent = new Intent(Download_Activity.this,CreateData_Activity.class);
                             intent.putParcelableArrayListExtra("Data",DownloadData);
                             startActivity(intent);
+                            Download_Activity.this.finish();
                             Log.e(TAG,"mAdapter.notifyDataSetChanged()");
                         }
                     } else {
