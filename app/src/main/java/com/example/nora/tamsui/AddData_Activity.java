@@ -155,7 +155,11 @@ public class AddData_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        AddData_Activity.this.finish();
     }
 
     private SceneData getSceneData(String DownloadUrl, String Scene) {
