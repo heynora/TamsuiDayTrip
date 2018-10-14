@@ -2,7 +2,10 @@ package com.example.nora.tamsui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -16,13 +19,18 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,7 +58,19 @@ public class Notified_Data_Activity extends AppCompatActivity {
         Back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UpdateData();
+                dialog = ProgressDialog.show(Notified_Data_Activity.this,
+                        "上傳中", "請等待...", true);
+                //haven fix the picture
+                if(filepath != null)
+                    fileupload(filepath);
+                else
+                    UpdateData();
+            }
+        });
+        Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showfilechooser();
             }
         });
     }
@@ -71,13 +91,10 @@ public class Notified_Data_Activity extends AppCompatActivity {
                 .into(Image);
     }
 
-
-    SceneData result = null;
-
-    private SceneData getSceneData() {
-        if (result == null)
-            result = new SceneData(Name_et.getText().toString(), Description_et.getText().toString(),
-                    Address_et.getText().toString(), data.getImagePath().toString(),data.getScene());
+    private SceneData getSceneData(String DownloadUrl, String Scene) {
+        SceneData result = null;
+        result = new SceneData(Name_et.getText().toString(), Description_et.getText().toString(),
+                Address_et.getText().toString(), DownloadUrl, Scene);
         return result;
     }
 
@@ -85,31 +102,32 @@ public class Notified_Data_Activity extends AppCompatActivity {
     ProgressDialog dialog;
     FirebaseFirestore db;
 
-    private void UpdateData() {
-        dialog = ProgressDialog.show(Notified_Data_Activity.this,
-                "上傳中", "請等待...", true);
+    private void UpdateData(String DownloadUrl) {
         db = FirebaseFirestore.getInstance();
-
         String collection = "Tamsui";
-        final String document = getSceneData().getScene();
-        Log.e(TAG, collection + " " + document);
-        Map<String, String> map = getSceneData().SceneMap("1");
-        db.collection(collection).document(document).update(getSceneData().getName(),map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        String document = data.getScene();
+        SceneData result = getSceneData(DownloadUrl, document);
+        Map<String, String> map = result.SceneMap("1");
+        db.collection(collection).document(document).update(result.getName(), map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 dialog.dismiss();
                 if (task.isSuccessful()) {
                     Toast.makeText(Notified_Data_Activity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
-                }else{
+
+                } else {
                     Toast.makeText(Notified_Data_Activity.this, "錯誤～~請CHECK網路是否正常", Toast.LENGTH_SHORT).show();
                 }
-//                Intent intent = new Intent(Notified_Data_Activity.this,Download_Activity.class);
-//                startActivity(intent);
                 Notified_Data_Activity.this.finish();
             }
         });
-
     }
+
+    private void UpdateData(){
+        String Url = data.getImagePath();
+        UpdateData(Url);
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -117,21 +135,61 @@ public class Notified_Data_Activity extends AppCompatActivity {
         Notified_Data_Activity.this.finish();
     }
 
-    private void Set() {
-        db = FirebaseFirestore.getInstance();
+    private final int PICKFILE_RESULT_CODE = 1;
+    private Uri filepath = null;
 
-        String collection = "Tamsui";
-        String document = "Scene5";
-        Log.e(TAG, collection + " " + document);
+    private void showfilechooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent.createChooser(intent, "Select the image"), PICKFILE_RESULT_CODE);
+    }
 
-        db.collection(collection).document(document).set(getSceneData().SceneMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICKFILE_RESULT_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            filepath = data.getData();
+            Log.e("DEBUG", "MatchUpload Temp : " + filepath.toString());
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
+                Image.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private StorageReference databaseReference;
+    private void fileupload(Uri filepath) {
+
+
+        String picName = Name_et.getText().toString() + ".png";
+        databaseReference = FirebaseStorage.getInstance().getReference();
+
+        final StorageReference imgReference = databaseReference.child(picName);
+        UploadTask uploadTask = imgReference.putFile(filepath);
+
+        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                dialog.dismiss();
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                return imgReference.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(Notified_Data_Activity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
+                    Uri taskResult = task.getResult();
+                    Log.e(TAG, taskResult.toString());
+                    UpdateData(taskResult.toString());
                 }
             }
         });
     }
+
+
 }
