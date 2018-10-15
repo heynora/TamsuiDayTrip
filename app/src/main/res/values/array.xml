@@ -6,4 +6,9 @@
         <item>Scene3</item>
         <item>Scene4</item>
     </string-array>
+    <string-array name="Time">
+        <item>3小時</item>
+        <item>6小時</item>
+        <item>9小時</item>
+    </string-array>
 </resources>

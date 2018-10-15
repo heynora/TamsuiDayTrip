@@ -6,17 +6,18 @@
     android:weightSum="16">
 
     <LinearLayout
+        android:id="@+id/scene_1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="horizontal"
         android:layout_weight="3"
+        android:orientation="horizontal"
         android:weightSum="7">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="3">
+            android:layout_weight="3"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/PlaceImage_1"
@@ -28,27 +29,27 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="0.5"></LinearLayout>
+            android:layout_weight="0.5"
+            android:orientation="vertical"></LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="3.5"
             android:orientation="vertical"
-            android:weightSum="4"
-            android:layout_weight="3.5">
+            android:weightSum="4">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="1"></LinearLayout>
+                android:layout_weight="1"
+                android:orientation="horizontal"></LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="2">
+                android:layout_weight="2"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/PlaceName_1"
@@ -61,18 +62,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="1"></LinearLayout>
+                android:layout_weight="1"
+                android:orientation="horizontal"></LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/arrow_1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imageView"
@@ -83,17 +85,18 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/scene_2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="horizontal"
         android:layout_weight="3"
+        android:orientation="horizontal"
         android:weightSum="7">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="3">
+            android:layout_weight="3"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/PlaceImage_2"
@@ -105,27 +108,27 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="0.5"></LinearLayout>
+            android:layout_weight="0.5"
+            android:orientation="vertical"></LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="3.5"
             android:orientation="vertical"
-            android:weightSum="4"
-            android:layout_weight="3.5">
+            android:weightSum="4">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="1"></LinearLayout>
+                android:layout_weight="1"
+                android:orientation="horizontal"></LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="2">
+                android:layout_weight="2"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/PlaceName_2"
@@ -138,18 +141,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="1"></LinearLayout>
+                android:layout_weight="1"
+                android:orientation="horizontal"></LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/arrow_2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -160,17 +164,18 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/scene_3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="horizontal"
         android:layout_weight="3"
+        android:orientation="horizontal"
         android:weightSum="7">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="3">
+            android:layout_weight="3"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/PlaceImage_3"
@@ -182,27 +187,27 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="0.5"></LinearLayout>
+            android:layout_weight="0.5"
+            android:orientation="vertical"></LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="3.5"
             android:orientation="vertical"
-            android:weightSum="4"
-            android:layout_weight="3.5">
+            android:weightSum="4">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="1"></LinearLayout>
+                android:layout_weight="1"
+                android:orientation="horizontal"></LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="2">
+                android:layout_weight="2"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/PlaceName_3"
@@ -215,18 +220,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="1"></LinearLayout>
+                android:layout_weight="1"
+                android:orientation="horizontal"></LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/arrow_3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imageView3"
@@ -237,17 +243,18 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/scene_4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="horizontal"
         android:layout_weight="3"
+        android:orientation="horizontal"
         android:weightSum="7">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="3">
+            android:layout_weight="3"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/PlaceImage_4"
@@ -259,27 +266,27 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="0.5"></LinearLayout>
+            android:layout_weight="0.5"
+            android:orientation="vertical"></LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="3.5"
             android:orientation="vertical"
-            android:weightSum="4"
-            android:layout_weight="3.5">
+            android:weightSum="4">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="1"></LinearLayout>
+                android:layout_weight="1"
+                android:orientation="horizontal"></LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="2">
+                android:layout_weight="2"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/PlaceName_4"
@@ -292,8 +299,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="1"></LinearLayout>
+                android:layout_weight="1"
+                android:orientation="horizontal"></LinearLayout>
 
         </LinearLayout>
 

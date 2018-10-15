@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,19 +26,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Tamsui_menu extends AppCompatActivity {
-
+    Spinner time_spinner;
+    int index;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tamsui_menu);
 
         TextView title = (TextView) findViewById(R.id.menu_title);
+        time_spinner = findViewById(R.id.time_spinner);
+        SpinnerSetting();
         title.setTextSize(60);
         Button rand = (Button) findViewById(R.id.rand);
         rand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Log.e("ScenceData", "RAND CLICK");
+                Log.e("select",""+index);
                 if (alldata == null) {
                     alldata = new ArrayList<>();
                     getData();
@@ -47,15 +54,12 @@ public class Tamsui_menu extends AppCompatActivity {
             }
         });
 
-        Button add = (Button) findViewById(R.id.add);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(Tamsui_menu.this, SingInActivity.class);
-                startActivity(intent);
-            }
-        });
+    }
+
+    private void SpinnerSetting() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Time, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        time_spinner.setAdapter(adapter);
     }
 
     SceneData data;
@@ -116,11 +120,13 @@ public class Tamsui_menu extends AppCompatActivity {
     }
 
     private void GoToRandomScene() {
+        index = time_spinner.getSelectedItemPosition();
         shuffle();
         Intent intent = new Intent(Tamsui_menu.this, Random.class);
         Bundle bundle = new Bundle();
         try {
             intent.putExtra("RandomData",RandomData);
+            intent.putExtra("index",index);
             startActivity(intent);
         }catch (Exception e) {
             Log.e(TAG, e.toString());

@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,10 +26,10 @@ import java.util.ArrayList;
 
 public class Random extends AppCompatActivity {
     Button back;
-    ImageView image1, image2, image3, image4;
-    TextView PlaceName1, PlaceName2, PlaceName3, PlaceName4;
     ImageView[] Image;
     TextView[] PlaceName;
+    LinearLayout scene_1,scene_2,scene_3,scene_4;
+    LinearLayout arrow_1,arrow_2,arrow_3;
     ArrayList<String> SceneData;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +57,14 @@ public class Random extends AppCompatActivity {
 
     //元件設定
     private void CompontSetting() {
+        scene_1 = (LinearLayout) findViewById(R.id.scene_1);
+        scene_2 = (LinearLayout) findViewById(R.id.scene_2);
+        scene_3 = (LinearLayout) findViewById(R.id.scene_3);
+        scene_4 = (LinearLayout) findViewById(R.id.scene_4);
+
+        arrow_1 = (LinearLayout) findViewById(R.id.arrow_1);
+        arrow_2 = (LinearLayout) findViewById(R.id.arrow_2);
+        arrow_3 = (LinearLayout) findViewById(R.id.arrow_3);
         //設定返回按鈕
         back = (Button) findViewById(R.id.rand_back);
         //設定景點圖片
@@ -72,6 +82,19 @@ public class Random extends AppCompatActivity {
 
         for(int i = 0;i<Image.length;i++)
             Image[i].setOnClickListener(onClickListener);
+
+        int index = getIntent().getIntExtra("index",3);
+        Log.e("rand",""+index);
+        if(index==0){
+            scene_3.setVisibility(View.INVISIBLE);
+            scene_4.setVisibility(View.INVISIBLE);
+            arrow_2.setVisibility(View.INVISIBLE);
+            arrow_3.setVisibility(View.INVISIBLE);
+        }
+        if(index==1){
+            scene_4.setVisibility(View.INVISIBLE);
+            arrow_3.setVisibility(View.INVISIBLE);
+        }
     }
 
     //點擊偵聽器
@@ -105,6 +128,7 @@ public class Random extends AppCompatActivity {
                     .into(Image[i]);
         }
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
