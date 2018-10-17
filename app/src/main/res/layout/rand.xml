@@ -6,7 +6,7 @@
     android:weightSum="16">
 
     <LinearLayout
-        android:id="@+id/scene_1"
+        android:id="@+id/scene1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
@@ -70,7 +70,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/arrow_1"
+        android:id="@+id/arrow1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -85,7 +85,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/scene_2"
+        android:id="@+id/scene2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
@@ -149,7 +149,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/arrow_2"
+        android:id="@+id/arrow2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -164,7 +164,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/scene_3"
+        android:id="@+id/scene3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
@@ -228,7 +228,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/arrow_3"
+        android:id="@+id/arrow3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -243,7 +243,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/scene_4"
+        android:id="@+id/scene4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"

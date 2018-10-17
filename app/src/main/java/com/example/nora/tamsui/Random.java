@@ -28,8 +28,8 @@ public class Random extends AppCompatActivity {
     Button back;
     ImageView[] Image;
     TextView[] PlaceName;
-    LinearLayout scene_1,scene_2,scene_3,scene_4;
-    LinearLayout arrow_1,arrow_2,arrow_3;
+    LinearLayout scene1,scene2,scene3,scene4;
+    LinearLayout arrow1,arrow2,arrow3;
     ArrayList<String> SceneData;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,14 +57,14 @@ public class Random extends AppCompatActivity {
 
     //元件設定
     private void CompontSetting() {
-        scene_1 = (LinearLayout) findViewById(R.id.scene_1);
-        scene_2 = (LinearLayout) findViewById(R.id.scene_2);
-        scene_3 = (LinearLayout) findViewById(R.id.scene_3);
-        scene_4 = (LinearLayout) findViewById(R.id.scene_4);
+        scene1 = (LinearLayout) findViewById(R.id.scene1);
+        scene2 = (LinearLayout) findViewById(R.id.scene2);
+        scene3 = (LinearLayout) findViewById(R.id.scene3);
+        scene4 = (LinearLayout) findViewById(R.id.scene4);
 
-        arrow_1 = (LinearLayout) findViewById(R.id.arrow_1);
-        arrow_2 = (LinearLayout) findViewById(R.id.arrow_2);
-        arrow_3 = (LinearLayout) findViewById(R.id.arrow_3);
+        arrow1 = (LinearLayout) findViewById(R.id.arrow1);
+        arrow2 = (LinearLayout) findViewById(R.id.arrow2);
+        arrow3 = (LinearLayout) findViewById(R.id.arrow3);
         //設定返回按鈕
         back = (Button) findViewById(R.id.rand_back);
         //設定景點圖片
@@ -86,14 +86,14 @@ public class Random extends AppCompatActivity {
         int index = getIntent().getIntExtra("index",3);
         Log.e("rand",""+index);
         if(index==0){
-            scene_3.setVisibility(View.INVISIBLE);
-            scene_4.setVisibility(View.INVISIBLE);
-            arrow_2.setVisibility(View.INVISIBLE);
-            arrow_3.setVisibility(View.INVISIBLE);
+            scene3.setVisibility(View.INVISIBLE);
+            scene4.setVisibility(View.INVISIBLE);
+            arrow2.setVisibility(View.INVISIBLE);
+            arrow3.setVisibility(View.INVISIBLE);
         }
         if(index==1){
-            scene_4.setVisibility(View.INVISIBLE);
-            arrow_3.setVisibility(View.INVISIBLE);
+            scene4.setVisibility(View.INVISIBLE);
+            arrow3.setVisibility(View.INVISIBLE);
         }
     }
 
