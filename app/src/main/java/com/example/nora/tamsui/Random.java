@@ -30,7 +30,6 @@ public class Random extends AppCompatActivity {
     TextView[] PlaceName;
     LinearLayout scene1,scene2,scene3,scene4;
     LinearLayout arrow1,arrow2,arrow3;
-    ArrayList<String> SceneData;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,17 +82,15 @@ public class Random extends AppCompatActivity {
         for(int i = 0;i<Image.length;i++)
             Image[i].setOnClickListener(onClickListener);
 
-        int index = getIntent().getIntExtra("index",3);
-        Log.e("rand",""+index);
-        if(index==0){
-            scene3.setVisibility(View.INVISIBLE);
-            scene4.setVisibility(View.INVISIBLE);
-            arrow2.setVisibility(View.INVISIBLE);
-            arrow3.setVisibility(View.INVISIBLE);
-        }
-        if(index==1){
+       // AwesomeEnum SpinnerIndex = getIntent().getIntExtra("TimeEnum",3);
+        TimeEnum Time = (TimeEnum) getIntent().getSerializableExtra("TimeEnum");
+        if (Time != TimeEnum.NineHr){
             scene4.setVisibility(View.INVISIBLE);
             arrow3.setVisibility(View.INVISIBLE);
+            if (Time != TimeEnum.SixHr){
+                scene3.setVisibility(View.INVISIBLE);
+                arrow2.setVisibility(View.INVISIBLE);
+            }
         }
     }
 

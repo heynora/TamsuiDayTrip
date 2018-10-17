@@ -126,7 +126,7 @@ public class Tamsui_menu extends AppCompatActivity {
         Bundle bundle = new Bundle();
         try {
             intent.putExtra("RandomData",RandomData);
-            intent.putExtra("index",index);
+            intent.putExtra("TimeEnum",TimeEnum.values()[index]);
             startActivity(intent);
         }catch (Exception e) {
             Log.e(TAG, e.toString());
