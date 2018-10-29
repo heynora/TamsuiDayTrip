@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -146,11 +147,13 @@ public class AddData_Activity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 progressDialog.dismiss();
                 if (task.isSuccessful()) {
-                    Toast.makeText(AddData_Activity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
-
+                    Toast toast = Toast.makeText(AddData_Activity.this, "SUCCESS", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();
                 } else {
-                    Toast.makeText(AddData_Activity.this, "錯誤～~請CHECK網路是否正常", Toast.LENGTH_SHORT).show();
-                }
+                    Toast toast = Toast.makeText(AddData_Activity.this, "錯誤～~請CHECK網路是否正常", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();                }
 //                Intent intent = new Intent(AddData_Activity.this,Download_Activity.class);
 //                startActivity(intent);
                 AddData_Activity.this.finish();

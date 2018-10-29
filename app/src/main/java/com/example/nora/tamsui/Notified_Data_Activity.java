@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -113,10 +115,14 @@ public class Notified_Data_Activity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 dialog.dismiss();
                 if (task.isSuccessful()) {
-                    Toast.makeText(Notified_Data_Activity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(Notified_Data_Activity.this, "SUCCESS", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();
 
                 } else {
-                    Toast.makeText(Notified_Data_Activity.this, "錯誤～~請CHECK網路是否正常", Toast.LENGTH_SHORT).show();
+                    Toast toast =Toast.makeText(Notified_Data_Activity.this, "錯誤～~請CHECK網路是否正常", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();
                 }
                 Notified_Data_Activity.this.finish();
             }

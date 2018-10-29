@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Scene;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -281,9 +282,16 @@ public class CreateData_Activity extends AppCompatActivity implements RecyclerTo
                 if(task.isSuccessful()) {
                     dialog.dismiss();
                     mAdapter.notifyDataSetChanged();
+                    Toast toast = Toast.makeText(CreateData_Activity.this, "SUCCESS", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();
                 }
-                else
-                    Log.e(TAG,task.getException().toString());
+                else {
+                    Toast toast = Toast.makeText(CreateData_Activity.this, "錯誤～~請CHECK網路是否正常", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                    Log.e(TAG, task.getException().toString());
+                }
             }
         });
     }
