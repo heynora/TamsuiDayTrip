@@ -120,9 +120,11 @@ public class Random extends AppCompatActivity {
             Log.e(TAG,data.getName());
             PlaceName[i].setText(data.getName());
             Glide.with(this)
-                    .load(data.getImagePath())
+                    .load(data.getImagePath().split(";")[0])
                     .apply(new RequestOptions().centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE))
                     .into(Image[i]);
+            Log.d(TAG, "Random Image: "+data.getImagePath());
+            Log.d(TAG, "Random data Name: "+ data.getName());
         }
     }
 

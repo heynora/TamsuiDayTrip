@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +40,16 @@ public class Introduction extends AppCompatActivity {
     ImageView image;
     Button location;
     WebView locationMap;
+    String[] images;
+    ViewPager viewPager;
+    ViewpagerAdapter adapter;
+
+//    private  String[] images = {
+//            // "https://goo.gl/images/VZj3GA"
+//            //  ,"https://goo.gl/images/1f3oZB"
+//              "https://firebasestorage.googleapis.com/v0/b/tamsui-b5f6f.appspot.com/o/%E5%A4%A9%E5%85%83%E5%AE%AE.png?alt=media&token=c12b1772-1f1b-4955-ab40-a58069a94811"
+//            ,"https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwjvwefrz_TeAhXSfysKHdFyApwQjRx6BAgBEAQ&url=https%3A%2F%2Fcloudinary.com%2Fblog%2Fintroducing_smart_cropping_intelligent_quality_selection_and_automated_responsive_images&psig=AOvVaw0k-bS5GCwfCCPdx0eQJ9d2&ust=1543409839264893"
+//    };
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +58,9 @@ public class Introduction extends AppCompatActivity {
         CompontSetting();
         setData();
         setWebView();
+        viewPager = (ViewPager)findViewById(R.id.viewpager);
+        adapter = new ViewpagerAdapter(Introduction.this,images);
+        viewPager.setAdapter(adapter);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,7 +74,7 @@ public class Introduction extends AppCompatActivity {
         title = (TextView) findViewById(R.id.introdution_title);
         content = (TextView) findViewById(R.id.introdution_content);
         address = (TextView) findViewById(R.id.introdution_address);
-        image = (ImageView) findViewById(R.id.intorduction_image);
+      //  image = (ImageView) findViewById(R.id.intorduction_image);
         location = (Button)findViewById(R.id.location_bt);
         location.setOnClickListener(location_click);
         locationMap = (WebView) findViewById(R.id.locationMap);
@@ -75,10 +89,13 @@ public class Introduction extends AppCompatActivity {
         title.setText(data.getName());
         content.setText(data.getDescription());
         address.setText("地址"+data.getAddress());
-        Glide.with(this)
-                .load(data.getImagePath())
-                .apply(new RequestOptions().centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE))
-                .into(image);
+        images =  data.getImagePath().split(";");
+        Log.e(TAG,"data:"+data.toString());
+
+//        Glide.with(this)
+//                .load(data.getImagePath())
+//                .apply(new RequestOptions().centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE))
+//                .into(image);
     }
 
     private static final String MAP_URL = "file:///android_asset/googleMap.html";
