@@ -123,6 +123,8 @@ public class Random extends AppCompatActivity {
                     .load(data.getImagePath())
                     .apply(new RequestOptions().centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE))
                     .into(Image[i]);
+            Log.d(TAG, "Random Image: "+data.getImagePath());
+            Log.d(TAG, "Random data Name: "+ data.getName());
         }
     }
 
