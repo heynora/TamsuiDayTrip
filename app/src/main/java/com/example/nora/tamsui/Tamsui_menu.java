@@ -85,7 +85,7 @@ public class Tamsui_menu extends AppCompatActivity {
                             try {
                                 SceneData sceneData = new SceneData((Map<String, String>) temp.getValue());
                                 data.add(sceneData);
-                                //Log.e(TAG, sceneData.toString());
+                                Log.e(TAG, sceneData.toString());
                             } catch (Exception e) {
                                 Log.e(TAG, "Exception");
                             }
