@@ -92,7 +92,7 @@ public class AddData_Activity extends AppCompatActivity {
     }
 
     private void viewPagerSetting() {
-        viewPagerShow(filepath);
+        viewPagerShow();
     }
 
     private final int PICKFILE_RESULT_CODE = 1;
@@ -119,7 +119,7 @@ public class AddData_Activity extends AppCompatActivity {
                 filepath = new ArrayList<Uri>();
                 filepath.add(data.getData());
             }
-            viewPagerShow(filepath);
+            viewPagerShow();
         }
     }
 
@@ -155,7 +155,8 @@ public class AddData_Activity extends AppCompatActivity {
                     Log.e(TAG, taskResult.toString());
                     if(uploadIndex != filepath.size()-1)
                         uploadUri +=taskResult.toString()+";";
-
+                    else
+                        uploadUri +=taskResult.toString();
                     fileupload(++uploadIndex);
                 }
             }
@@ -204,19 +205,15 @@ public class AddData_Activity extends AppCompatActivity {
         return result;
     }
 
-    private void viewPagerShow(ArrayList<Uri> images) {
-        if (images == null) {
-            images = new ArrayList<>();
+    private void viewPagerShow() {
+        if (filepath == null) {
+            filepath = new ArrayList<>();
             if (defaultUri == null)
                 defaultUri = Uri.parse("android.resource://com.example.nora.tamsui/drawable/click");
 
         }
-        images.add(defaultUri);
-        adapter = new ViewpagerAdapter(this, images);
+        filepath.add(defaultUri);
+        adapter = new ViewpagerAdapter(this, filepath);
         viewPager.setAdapter(adapter);
-    }
-
-    private void SendToFirebase(){
-
     }
 }
