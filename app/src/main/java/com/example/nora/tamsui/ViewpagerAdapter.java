@@ -26,13 +26,16 @@ public class ViewpagerAdapter extends PagerAdapter {
     String[] images;
     LayoutInflater inflater;
     ArrayList<Uri> imagesUri;
-
+    boolean edit = false;
     public ViewpagerAdapter(Activity activity, String[] images) {
         this.activity = activity;
         this.images = images;
-
     }
-
+    public ViewpagerAdapter(Activity activity, String[] images,boolean edit) {
+        this.activity = activity;
+        this.images = images;
+        this.edit = edit;
+    }
     public ViewpagerAdapter(Activity activity, ArrayList<Uri> images) {
         this.activity = activity;
         this.imagesUri = images;
@@ -68,6 +71,14 @@ public class ViewpagerAdapter extends PagerAdapter {
         image.setMaxWidth(width);
         if (images != null) {
             try {
+                if(edit && position == getCount()-1) {
+                    image.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            showfilechooser();
+                        }
+                    });
+                }
                 Picasso.with(activity.getApplicationContext())
                         .load(images[position])
                         .placeholder(R.mipmap.ic_launcher)

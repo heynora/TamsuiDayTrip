@@ -69,12 +69,11 @@
             android:layout_height="0dp"
             android:layout_weight="3"/>
 
-        <ImageView
-            android:id="@+id/Image"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="4"
-            app:srcCompat="@drawable/a1" />
+            android:layout_weight="3"></android.support.v4.view.ViewPager>
 
         <Button
             android:id="@+id/SentData_bt"
