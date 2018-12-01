@@ -1,6 +1,7 @@
 package com.example.nora.tamsui;
 
 import android.app.ProgressDialog;
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -33,6 +35,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,6 +53,12 @@ public class Notified_Data_Activity extends AppCompatActivity {
     EditText Name_et, Address_et, Description_et;
     ImageView Image;
     Button Back;
+    ViewPager viewPager;
+    ViewpagerAdapter adapter;
+    private ArrayList<Uri> filepath;
+    private Uri defaultUri;
+    private String uploadUri="";
+    private int uploadIndex = 0;
 
     public void CompontSetting() {
         Name_et = (EditText) findViewById(R.id.Name_et);
@@ -62,19 +71,14 @@ public class Notified_Data_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 dialog = ProgressDialog.show(Notified_Data_Activity.this,
                         "上傳中", "請等待...", true);
-                //haven fix the picture
+//                haven fix the picture
                 if(filepath != null)
-                    fileupload(filepath);
+                    fileupload(uploadIndex);
                 else
                     UpdateData();
             }
         });
-        Image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showfilechooser();
-            }
-        });
+        viewPager = findViewById(R.id.viewpager);
     }
 
     SceneData data;
@@ -87,11 +91,21 @@ public class Notified_Data_Activity extends AppCompatActivity {
         Name_et.setText(data.getName());
         Address_et.setText(data.getAddress());
         Description_et.setText(data.getDescription());
-        Glide.with(this)
-                .load(data.getImagePath())
-                .apply(new RequestOptions().centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE))
-                .into(Image);
+        adapter = new ViewpagerAdapter(this, data.getImagePath().split(";"),true);
+        viewPager.setAdapter(adapter);
     }
+
+    private void viewPagerShow() {
+        if (filepath == null) {
+            filepath = new ArrayList<>();
+        }
+        if (defaultUri == null)
+            defaultUri = Uri.parse("android.resource://com.example.nora.tamsui/drawable/click");
+        filepath.add(defaultUri);
+        adapter = new ViewpagerAdapter(this, filepath);
+        viewPager.setAdapter(adapter);
+    }
+
 
     private SceneData getSceneData(String DownloadUrl, String Scene) {
         SceneData result = null;
@@ -142,47 +156,51 @@ public class Notified_Data_Activity extends AppCompatActivity {
     }
 
     private final int PICKFILE_RESULT_CODE = 1;
-    private Uri filepath = null;
-
-    private void showfilechooser() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent.createChooser(intent, "Select the image"), PICKFILE_RESULT_CODE);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == PICKFILE_RESULT_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            filepath = data.getData();
-            Log.e("DEBUG", "MatchUpload Temp : " + filepath.toString());
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
-                Image.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (requestCode == PICKFILE_RESULT_CODE && resultCode == RESULT_OK && data != null) {
+
+            //只選擇一張時透過 data.getData()
+            //  選擇多張時透過 data.getClipData()
+            filepath = null;
+            if (data.getClipData() != null) {
+                ClipData clipData = data.getClipData();
+                int fileCount = clipData.getItemCount();
+                filepath = new ArrayList<Uri>();
+                for (int i = 0; i < fileCount; i++) {
+                    filepath.add(clipData.getItemAt(i).getUri());
+                }
+            } else if (data.getData() != null) {
+                filepath = new ArrayList<Uri>();
+                filepath.add(data.getData());
             }
+            viewPagerShow();
         }
     }
 
     private StorageReference databaseReference;
-    private void fileupload(Uri filepath) {
+    private void fileupload(int index) {
 
-
-        String picName = Name_et.getText().toString() + ".png";
+        if(index == filepath.size()){
+            UpdateData(uploadUri);
+            return;
+        }
+        String picName = Name_et.getText().toString() +index +".png";
         databaseReference = FirebaseStorage.getInstance().getReference();
 
         final StorageReference imgReference = databaseReference.child(picName);
-        UploadTask uploadTask = imgReference.putFile(filepath);
+        UploadTask uploadTask = imgReference.putFile(filepath.get(index));
 
         uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                 if (!task.isSuccessful()) {
+                    Log.e("AddDataActivity","!task.isSuccessful()" + task.getException().toString());
                     throw task.getException();
                 }
-
                 return imgReference.getDownloadUrl();
             }
         }).addOnCompleteListener(new OnCompleteListener<Uri>() {
@@ -191,7 +209,11 @@ public class Notified_Data_Activity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Uri taskResult = task.getResult();
                     Log.e(TAG, taskResult.toString());
-                    UpdateData(taskResult.toString());
+                    if(uploadIndex != filepath.size()-1)
+                        uploadUri +=taskResult.toString()+";";
+                    else
+                        uploadUri +=taskResult.toString();
+                    fileupload(++uploadIndex);
                 }
             }
         });

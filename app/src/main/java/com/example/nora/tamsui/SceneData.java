@@ -66,7 +66,7 @@ public class SceneData implements Parcelable {
     };
 
     public String toString() {
-        return this.Name + " ," + this.Description.substring(0, 10) + "... \n"
+        return this.Name + " ," + this.Description.substring(0, Math.min(this.Description.length(),10)) + "... \n"
                 + this.Address + " ," + this.ImagePath;
     }
     public void setScene(String _Scene){this.Scene = _Scene;}

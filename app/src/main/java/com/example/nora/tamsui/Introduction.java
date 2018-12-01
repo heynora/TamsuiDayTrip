@@ -90,6 +90,14 @@ public class Introduction extends AppCompatActivity {
         content.setText(data.getDescription());
         address.setText("地址"+data.getAddress());
         images =  data.getImagePath().split(";");
+        Log.e(TAG,"LENGTH: "+images.length);
+        if(images.length > 1){
+            String[] temp = new String[images.length-1];
+            for(int i = 0;i<temp.length;i++){
+                temp[i] = images[i];
+            }
+            images = temp;
+        }
         Log.e(TAG,"data:"+data.toString());
 
 //        Glide.with(this)
