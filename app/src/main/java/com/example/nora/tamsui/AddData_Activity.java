@@ -1,6 +1,7 @@
 package com.example.nora.tamsui;
 
 import android.app.ProgressDialog;
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -33,16 +35,24 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class AddData_Activity extends AppCompatActivity {
     EditText Name_et, Address_et, Description_et;
-    ImageView Image;
+
     Button SentData_bt;
     Spinner sceneSpinner;
 
 
-    private Uri filepath;
+    ViewPager viewPager;
+    ViewpagerAdapter adapter;
+
+    private ArrayList<Uri> filepath;
+    private Uri defaultUri;
+    private String uploadUri="";
+    private int uploadIndex = 0;
     ProgressDialog progressDialog;
 
     @Override
@@ -51,12 +61,7 @@ public class AddData_Activity extends AppCompatActivity {
         setContentView(R.layout.add_data);
         ComponentSetting();
         SpinnerSetting();
-        Image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showfilechooser();
-            }
-        });
+        viewPagerSetting();
     }
 
     private void ComponentSetting() {
@@ -64,8 +69,20 @@ public class AddData_Activity extends AppCompatActivity {
         Name_et = (EditText) findViewById(R.id.Name_et);
         Address_et = (EditText) findViewById(R.id.Address_et);
         Description_et = (EditText) findViewById(R.id.Description_et);
-        Image = (ImageView) findViewById(R.id.Image);
         SentData_bt = (Button) findViewById(R.id.SentData_bt);
+        viewPager = findViewById(R.id.viewpager);
+        SentData_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(filepath == null){
+                    Toast.makeText(AddData_Activity.this,"至少要選擇一張圖喔！！",Toast.LENGTH_SHORT).show();
+                }else{
+                    progressDialog = ProgressDialog.show(AddData_Activity.this,
+                            "上傳中", "請等待...", true);
+                    fileupload(uploadIndex);
+                }
+            }
+        });
     }
 
     private void SpinnerSetting() {
@@ -74,51 +91,60 @@ public class AddData_Activity extends AppCompatActivity {
         sceneSpinner.setAdapter(adapter);
     }
 
+    private void viewPagerSetting() {
+        viewPagerShow(filepath);
+    }
+
     private final int PICKFILE_RESULT_CODE = 1;
 
-    private void showfilechooser() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent.createChooser(intent, "Select the image"), PICKFILE_RESULT_CODE);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.e("AddDataActivity", "onActivityResult");
+        if (requestCode == PICKFILE_RESULT_CODE && resultCode == RESULT_OK && data != null) {
 
-        if (requestCode == PICKFILE_RESULT_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            filepath = data.getData();
-            fileupload(filepath);
-            Log.e("DEBUG", "MatchUpload Temp : " + filepath.toString());
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
-                Image.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
+            //只選擇一張時透過 data.getData()
+            //  選擇多張時透過 data.getClipData()
+            filepath = null;
+
+            if (data.getClipData() != null) {
+                ClipData clipData = data.getClipData();
+                int fileCount = clipData.getItemCount();
+                filepath = new ArrayList<Uri>();
+                for (int i = 0; i < fileCount; i++) {
+                    filepath.add(clipData.getItemAt(i).getUri());
+                }
+            } else if (data.getData() != null) {
+                filepath = new ArrayList<Uri>();
+                filepath.add(data.getData());
             }
+            viewPagerShow(filepath);
         }
     }
 
     private String TAG = "AddData Activity";
     private StorageReference databaseReference;
 
-    private void fileupload(Uri filepath) {
-        progressDialog = ProgressDialog.show(this,
-                "上傳中", "請等待...", true);
+    private void fileupload(int index) {
 
-        String picName = Name_et.getText().toString() + ".png";
+        if(index == filepath.size()){
+            UpdateData(uploadUri);
+            return;
+        }
+        String picName = Name_et.getText().toString() +index +".png";
         databaseReference = FirebaseStorage.getInstance().getReference();
 
         final StorageReference imgReference = databaseReference.child(picName);
-        UploadTask uploadTask = imgReference.putFile(filepath);
+        UploadTask uploadTask = imgReference.putFile(filepath.get(index));
 
         uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                 if (!task.isSuccessful()) {
+                    Log.e("AddDataActivity","!task.isSuccessful()" + task.getException().toString());
                     throw task.getException();
                 }
-
                 return imgReference.getDownloadUrl();
             }
         }).addOnCompleteListener(new OnCompleteListener<Uri>() {
@@ -127,7 +153,10 @@ public class AddData_Activity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Uri taskResult = task.getResult();
                     Log.e(TAG, taskResult.toString());
-                    UpdateData(taskResult.toString());
+                    if(uploadIndex != filepath.size()-1)
+                        uploadUri +=taskResult.toString()+";";
+
+                    fileupload(++uploadIndex);
                 }
             }
         });
@@ -148,18 +177,20 @@ public class AddData_Activity extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (task.isSuccessful()) {
                     Toast toast = Toast.makeText(AddData_Activity.this, "SUCCESS", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
                 } else {
                     Toast toast = Toast.makeText(AddData_Activity.this, "錯誤～~請CHECK網路是否正常", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER,0,0);
-                    toast.show();                }
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
 //                Intent intent = new Intent(AddData_Activity.this,Download_Activity.class);
 //                startActivity(intent);
                 AddData_Activity.this.finish();
             }
         });
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -173,4 +204,19 @@ public class AddData_Activity extends AppCompatActivity {
         return result;
     }
 
+    private void viewPagerShow(ArrayList<Uri> images) {
+        if (images == null) {
+            images = new ArrayList<>();
+            if (defaultUri == null)
+                defaultUri = Uri.parse("android.resource://com.example.nora.tamsui/drawable/click");
+
+        }
+        images.add(defaultUri);
+        adapter = new ViewpagerAdapter(this, images);
+        viewPager.setAdapter(adapter);
+    }
+
+    private void SendToFirebase(){
+
+    }
 }

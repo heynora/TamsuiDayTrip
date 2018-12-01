@@ -22,8 +22,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
-                android:text="Scene"
                 android:gravity="bottom"
+                android:text="Scene"
                 android:textSize="24sp" />
 
             <Spinner
@@ -39,9 +39,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="2"
             android:orientation="horizontal"
-            android:weightSum="4"
-            android:layout_weight="2">
+            android:weightSum="4">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -53,16 +53,16 @@
                     android:id="@+id/Name_tv"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
-                    android:text="Name"
                     android:gravity="bottom"
+                    android:text="Name"
                     android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/Address_tv"
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
-                    android:text="Address"
                     android:gravity="bottom"
+                    android:text="Address"
                     android:textSize="24sp" />
 
             </LinearLayout>
@@ -98,12 +98,12 @@
             android:layout_weight="3"
             android:text="測試用" />
 
-        <ImageView
-            android:id="@+id/Image"
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
-            app:srcCompat="@drawable/a1" />
+            android:layout_weight="3"></android.support.v4.view.ViewPager>
 
         <Button
             android:id="@+id/SentData_bt"
